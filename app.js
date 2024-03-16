@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express');
 var app = express();
 const bodyParser = require('body-parser');
@@ -18,7 +19,12 @@ mongoose.connect(process.env.CONNECTION_STRING);
 
 app.use(express.static('public'))
 
+//those 2 lines will repeate with respective API:
 const posts = require('./routes/post');
 app.use('/posts', posts);
+
+const users = require('./routes/user');
+app.use('/api/users', users);
+
 
 app.listen(process.env.PORT)
