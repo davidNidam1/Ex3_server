@@ -19,12 +19,15 @@ mongoose.connect(process.env.CONNECTION_STRING);
 
 app.use(express.static('public'))
 
-//those 2 lines will repeate with respective API:
-const posts = require('./routes/post');
-app.use('/posts', posts);
+// directors:
+const post = require('./routes/post');
+const user = require('./routes/user');
+const token = require('./api/token');
 
-const users = require('./routes/user');
-app.use('/api/users', users);
+//API (uses directors):
+app.use('/posts', post);
+app.use('/api/users', user);
+app.use('/api/tokens', token);
 
 
 app.listen(process.env.PORT)
