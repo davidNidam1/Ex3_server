@@ -1,4 +1,4 @@
-require('dotenv').config()
+require('dotenv').config();
 const express = require('express');
 var app = express();
 const bodyParser = require('body-parser');
@@ -11,23 +11,24 @@ app.use(cors());
 
 const customEnv = require('custom-env');
 customEnv.env(process.env.NODE_ENV, './config');
-console.log(process.env.CONNECTION_STRING)
-console.log(process.env.PORT)
+console.log(process.env.CONNECTION_STRING);
+console.log(process.env.PORT);
 
 const mongoose = require('mongoose');
 mongoose.connect(process.env.CONNECTION_STRING);
 
-app.use(express.static('public'))
+app.use(express.static('public'));
 
 // directors:
 const post = require('./routes/post');
 const user = require('./routes/user');
-const token = require('./api/token');
+const token = require('./routes/token');
 
 //API (uses directors):
-app.use('/posts', post);
+app.use('/posts', post); // TODO: change to '/api/users/:id/posts'
 app.use('/api/users', user);
 app.use('/api/tokens', token);
+app.use('/api/posts', post)
 
 
-app.listen(process.env.PORT)
+app.listen(process.env.PORT);

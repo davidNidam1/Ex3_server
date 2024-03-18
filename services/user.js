@@ -2,19 +2,18 @@
 
 const User = require('../models/user');
 
-async function createUser(username, email, password) {
+async function createUser(username, password) {
     try {
-        // Check if user already exists with the given username or email
-        const existingUser = await User.findOne({ $or: [{ username }, { email }] });
+        // Check if user already exists with the given username  
+        const existingUser = await User.findOne({ username });
         if (existingUser) {
-            throw new Error('Username or email already exists');
+            throw new Error('Username already exists');
         }
 
         // Create a new user object
         const newUser = new User({
             username,
-            email,
-            password, // Note: In a production environment, password should be hashed
+            password, 
         });
 
         // Save the new user to the database
@@ -27,6 +26,17 @@ async function createUser(username, email, password) {
     }
 }
 
+async function checkUserExistence(username) {
+    try {
+        // Check if user already exists with the given username  
+        const existingUser = await User.findOne({ username });
+        return existingUser;
+    } catch (error) {
+        throw error;
+    }
+}
+
 module.exports = {
     createUser,
+    checkUserExistence
 };

@@ -1,19 +1,22 @@
 const tokenService = require('../services/token');
+const userService  = require('../services/user');
 
-// Controller function to handle user login and token generation
+// Controller function to generate a token (after a successfull log-in):
 const processLogin = async (req, res) => {
-  const { username, password } = req.body;
   // Authenticate user with username and password
-  if (/* Authentication logic */) {
-    // Generate token
-    const token = tokenService.generateToken({ username });
+  const userExist = await userService.checkUserExistence(req.body.username);
+  if (userExist) {
+    // Create token
+    const token = await tokenService.createToken( userExist.username);
     // Save token to database
-    await tokenService.saveToken({ token });
-    res.status(200).json({ token });
-  } else {
-    res.status(401).send('Invalid username or password');
-  }
+    // TODO: check if next line needed:
+    await tokenService.saveToken({ userExist, token });
+    // Return the token
+    res.status(201).json({ token });
+
+  } else { res.status(404).send('Invalid credentials');}
 };
+
 
 // Middleware function to verify token
 const verifyToken = async (req, res, next) => {

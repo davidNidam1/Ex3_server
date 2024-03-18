@@ -1,7 +1,16 @@
 const postService = require('../services/post');
 
+const getFeedPosts = async (req, res) => {
+    try {
+        const posts = await postService.getFeedPosts(req);
+        res.json(posts);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 const createPost = async (req, res) => {
-    res.json(await postService.createPost(req.body.text, req.body.picture)); //check syntacs
+    res.json(await postService.createPost(req)); //check syntax
 };
 
 const getPosts = async (_, res) => {
@@ -33,4 +42,4 @@ const deletePost = async (req, res) => {
     res.json(post);
 };
 
-module.exports = { createPost, getPosts, getPost, updatePost, deletePost}
+module.exports = { getFeedPosts, createPost, getPosts, getPost, updatePost, deletePost}

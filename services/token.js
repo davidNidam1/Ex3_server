@@ -1,18 +1,22 @@
-const jwt = require('jsonwebtoken');
+const token = require('jsonwebtoken');
 const Token = require('../models/token');
 
-// Secret key for JWT token
-const secretKey = 'your_secret_key_here'; // Change this to a more secure key
+// Secret key for token
+const secretKey = 'aVerySecretKey'; 
 
-// Function to generate JWT token
-const generateToken = (data) => {
-  return jwt.sign(data, secretKey);
+// Function to generate token
+const createToken = async (username) => {
+  const createdToken = token.sign(username, secretKey); //TODO check if assigning a variable possible syntaxly
+  return createdToken;
 };
 
-// Function to verify JWT token
-const verifyToken = (token) => {
+// Function to verify token
+// Supposed to return the username.
+// TODO: checl it acctually does.
+const verifyToken = (jwt) => {
   try {
-    return jwt.verify(token, secretKey);
+    const username = token.verify(jwt, secretKey);
+    return username;
   } catch (error) {
     return null;
   }
@@ -24,4 +28,4 @@ const saveToken = async (tokenData) => {
   return await token.save();
 };
 
-module.exports = { generateToken, verifyToken, saveToken };
+module.exports = { createToken, verifyToken, saveToken };

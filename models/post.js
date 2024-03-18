@@ -1,20 +1,21 @@
-const mongoose = require('mongoose') ;
+const mongoose = require('mongoose');
+const User = require('./user');
 
 const Schema = mongoose.Schema;
 const Post = new Schema({
-//    "id" : {
-//    type: int,     //capital i?
-//    required: true //defaultive?
-//    },
-    date : {
+    publisher: {
+        ref: User,
+        required: true
+    },
+    date: {
         type: Date,
         default: Date.now
     },
-    text : {
+    text: {
         type: String,
         required: true
     },
-    picture : {
+    picture: {
         type: String //affirm
     }
 
