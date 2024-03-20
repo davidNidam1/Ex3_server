@@ -25,7 +25,6 @@ const user = require('./routes/user');
 const token = require('./routes/token');
 
 //API (uses directors):
-app.use('/posts', post); // TODO: change to '/api/users/:id/posts'
 app.use('/api/users', user);
 app.use('/api/tokens', token);
 app.use('/api/posts', post)

@@ -148,6 +148,94 @@ async function createPost(req, res) {
     }
 }
 
+
+async function getFriends(req, res) {
+    try {
+        // Extract the username from request parameters
+        const username = req.params.id;
+
+        // Extract the current user from the token
+        const currentUser = tokenChecker(req);
+
+        // Check if the current user is the same as the requested user or is a friend
+        if (currentUser !== username && !(await userService.areFriends(currentUser, username))) {
+            return res.status(403).json({ errors: ['Unauthorized: You are not authorized to view this user\'s friends'] });
+        }
+
+        // Retrieve the user's friends list
+        const friends = await userService.getFriends(username);
+
+        // Respond with the friends list
+        res.json({ friends });
+    } catch (error) {
+        console.error('Error getting friends:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+}
+
+
+async function askToBeFriend(req, res) {
+    try {
+        // Extract the username from request parameters
+        const requestedUser = req.params.id;
+
+        // Extract the current user from the token
+        const currentUser = tokenChecker(req);
+
+        // Call the service function to send friend request
+        await userService.askToBeFriend(currentUser, requestedUser);
+
+        res.status(200).json({ message: 'Friend request sent successfully' });
+    } catch (error) {
+        console.error('Error sending friend request:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+}
+
+
+async function acceptFriendship(req, res) {
+    try {
+        // Extract the usernames from request parameters
+        const currentUser = tokenChecker(req);
+        const senderUser = req.params.fid;
+        const receiverUser = req.params.id;
+
+        // Check if the current user is the same as the receiver
+        if (currentUser === receiverUser) {
+            // Call the service function to accept friendship
+            await userService.acceptFriendship(senderUser, receiverUser);
+            res.status(200).json({ message: 'Friendship accepted successfully' });
+        } else {
+            res.status(403).json({ errors: ['Unauthorized: You are not allowed to accept this friendship request'] });
+        }
+    } catch (error) {
+        console.error('Error accepting friendship:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+}
+
+
+async function deleteFriend(req, res) {
+    try {
+        // Extract the usernames from request parameters
+        const currentUser = tokenChecker(req);
+        const friendToRemove = req.params.fid;
+        const userToDeleteFrom = req.params.id;
+
+        // Check if the current user is the same as the user to delete from
+        if (currentUser === userToDeleteFrom) {
+            // Call the service function to delete friendship
+            await userService.deleteFriend(currentUser, friendToRemove);
+            res.status(200).json({ message: 'Friend removed successfully' });
+        } else {
+            res.status(403).json({ errors: ['Unauthorized: You are not allowed to remove this friendship'] });
+        }
+    } catch (error) {
+        console.error('Error removing friend:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+}
+
 module.exports = {
     createUser,
     getUserDetails,
@@ -155,4 +243,8 @@ module.exports = {
     deleteUser,
     getFriendPosts, 
     createPost,
+    getFriends,
+    askToBeFriend,
+    acceptFriendship,
+    deleteFriend,
 };

@@ -48,24 +48,44 @@ const getPosts = async () => {
     return await Post.find({});
 };
 
-const getPostById = async (id) => {
-    return await Post.findById(id);
+const getPostById = async (postId) => {
+    return await Post.findById(postId);
 };
 
-//check if picture-edit needed
-const updatePost = async (id, text) => {
-    const post = await getPostById(id);
-    if (!post) return null;
-    post.text = text;
-    await post.save();
-    return post;
-};
+async function updatePost(postId, { text, picture }) {
+    try {
+        const post = await getPostById(postId);
+        if (!post) return null;
 
-const deletePost = async (id) => {
-    const post = await getPostById(id);
-    if (!post) return null;
-    await post.deleteOne();
-    return post;
-};
+        // Update the relevant members if provided
+        if (text !== undefined) {
+            post.text = text;
+        }
+        if (picture !== undefined) {
+            post.picture = picture;
+        }
+
+        await post.save();
+        return post;
+    } catch (error) {
+        // Handle any errors that occur during post update
+        console.error('Error updating post:', error);
+        throw new Error('Error updating post');
+    }
+}
+
+async function deletePost(postId) {
+    try {
+        // Find the post by its ID and delete it
+        const deletedPost = await Post.findByIdAndDelete(postId);
+
+        // Return the deleted post or null if not found
+        return deletedPost;
+    } catch (error) {
+        // Handle any errors that occur during post deletion
+        console.error('Error deleting post:', error);
+        throw new Error('Error deleting post');
+    }
+}
 
 module.exports = { getFeedPosts, createPost, getPosts, getPostById, updatePost, deletePost }

@@ -193,6 +193,67 @@ async function createPost(username, { text, picture }) {
 }
 
 
+async function getFriends(username) {
+    try {
+        // Find the user by username and select the friends field
+        const user = await User.findOne({ username }).select('friends');
+
+        // If user is not found or user has no friends, return an empty array
+        if (!user || !user.friends) {
+            return [];
+        }
+
+        // Return the friends list
+        return user.friends;
+    } catch (error) {
+        // Handle any errors that occur during friend retrieval
+        console.error('Error getting friends:', error);
+        throw new Error('Error getting friends');
+    }
+}
+
+
+async function askToBeFriend(currentUser, requestedUser) {
+    try {
+        // Find the requested user and update its friendRequests list
+        await User.updateOne({ username: requestedUser }, { $addToSet: { friendRequests: currentUser } });
+    } catch (error) {
+        // Handle any errors that occur during friend request sending
+        console.error('Error sending friend request:', error);
+        throw new Error('Error sending friend request');
+    }
+}
+
+
+
+async function acceptFriendship(senderUser, receiverUser) {
+    try {
+        // Update the sender's friend list
+        await User.updateOne({ username: senderUser }, { $addToSet: { friends: receiverUser } });
+
+        // Update the receiver's friendRequests list
+        await User.updateOne({ username: receiverUser }, { $pull: { friendRequests: senderUser } });
+    } catch (error) {
+        // Handle any errors that occur during friendship acceptance
+        console.error('Error accepting friendship:', error);
+        throw new Error('Error accepting friendship');
+    }
+}
+
+
+const User = require('../models/user');
+
+async function deleteFriend(currentUser, friendToRemove) {
+    try {
+        // Update the current user's friend list to remove the friend to remove
+        await User.updateOne({ username: currentUser }, { $pull: { friends: friendToRemove } });
+    } catch (error) {
+        // Handle any errors that occur during friend removal
+        console.error('Error removing friend:', error);
+        throw new Error('Error removing friend');
+    }
+}
+
 module.exports = {
     createUser,
     checkUserExistence,
@@ -203,4 +264,8 @@ module.exports = {
     areFriends,
     getFriendPosts,
     createPost,
+    getFriends,
+    askToBeFriend,
+    acceptFriendship,
+    deleteFriend,
 };
