@@ -10,16 +10,13 @@ async function createUser(req, res) {
         const { firstName, lastName, email, password, nickName, gender, month, day, year, profilePicture } = req.body;
         // Call service function to create user
         const newUser = await userService.createUser({username: nickName, password, profilePicture});
-        // WE check the user's token validity 
-        if (tokenChecker(req)){
         // Respond with the newly created user object
-        res.status(201).json(newUser);
-        }
+        res.status(200).json(newUser);
     } catch (error) {
         // Handle any errors that occur during user creation
         console.error('Error creating user:', error);
         //TODO: check if 500/404
-        res.status(500).json({ message: 'Internal Server Error' });
+        res.status(409).json({ message: 'Internal Server Error' });
     }
 }
 

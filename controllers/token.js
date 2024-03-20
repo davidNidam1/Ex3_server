@@ -12,7 +12,7 @@ const processLogin = async (req, res) => {
     // TODO: check if next line needed:
     await tokenService.saveToken({ userExist, token });
     // Return the token
-    res.status(201).json({ token });
+    res.status(200).json({ token });
 
   } else { res.status(404).send('Invalid credentials');}
 };
