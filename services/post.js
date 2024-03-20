@@ -1,7 +1,7 @@
 
 const Post = require('../models/post');
 const User = require('../models/user');
-const tokenChecker  = require('../tokenChecker');
+const tokenChecker  = require('../tokenChecker').tokenChecker;
 
 
 const getFeedPosts = async (req) => {

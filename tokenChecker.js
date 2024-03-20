@@ -1,4 +1,4 @@
-const tokenService = require('../services/token');
+const tokenService = require('./services/token');
 
 
 const tokenChecker = async (req) => {
@@ -8,9 +8,10 @@ const tokenChecker = async (req) => {
         // Token is missing or not provided in the correct format
         return { error: 'Missing or invalid token' };
     }
-
+ 
+    // TODO: handle error:
     const token = await req.headers.authorization.split(' ')[1];
-    const affirmedToken = await tokenService.verifyToken(token);
+    const affirmedToken = tokenService.verifyToken(token);
 
     // affirmedToken = username
     return affirmedToken;
