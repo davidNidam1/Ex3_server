@@ -47,6 +47,9 @@ async function createUser(username, password, profilePicture) {
             throw new Error('Username already exists');
         }
 
+        // Generate new user ID
+        const userId = await getNewId();
+
         // Create a new user object
         // pic the largest id and add 1
         // TODO: check syntax
@@ -56,7 +59,7 @@ async function createUser(username, password, profilePicture) {
             profilePicture,
             friends: [],
             friendRequests: [],
-            friendRequests: getNewId()
+            userId: userId
         });
 
         // Save the new user to the database

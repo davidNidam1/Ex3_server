@@ -7,9 +7,13 @@ const postController = require('../controllers/post');
 async function createUser(req, res) {
     try {
         // Extract user data from request body
-        const { firstName, lastName, email, password, nickName, gender, month, day, year, profilePicture } = req.body;
+        const { firstName, lastName, email, password, reEnterPassword, nickName, gender, month, day, year, profilePicture } = req.body;
+
+        // Print the req.body to the console
+        console.log('Request Body:', req.body);
+
         // Call service function to create user
-        const newUser = await userService.createUser({username: nickName, password, profilePicture});
+        const newUser = await userService.createUser(nickName, password, profilePicture);
         // Respond with the newly created user object
         res.status(200).json(newUser);
     } catch (error) {

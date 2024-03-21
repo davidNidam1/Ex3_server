@@ -1,20 +1,27 @@
-require('dotenv').config();
-const express = require('express');
-var app = express();
-const bodyParser = require('body-parser');
+require('dotenv').config(); //
+const express = require('express'); // 
+var app = express(); //
+const bodyParser = require('body-parser'); // 
 
-app.use(bodyParser.urlencoded({ extended: true}));
-app.use(express.json());
+app.use(bodyParser.urlencoded({ limit: '100mb', extended: true }));
+app.use(express.json({ limit: '100mb' })); // Increase payload size limit to 50MB for JSON data
 
-const cors = require('cors');
-app.use(cors());
 
-const customEnv = require('custom-env');
-customEnv.env(process.env.NODE_ENV, './config');
+
+// Increase payload size limit to 50MB (or any other suitable value)
+//app.use(bodyParser.json({ limit: '50mb' }));
+
+
+
+const cors = require('cors'); //
+app.use(cors()); //
+
+const customEnv = require('custom-env'); //
+customEnv.env(process.env.NODE_ENV, './config'); //
 console.log(process.env.CONNECTION_STRING);
 console.log(process.env.PORT);
 
-const mongoose = require('mongoose');
+const mongoose = require('mongoose'); //
 mongoose.connect(process.env.CONNECTION_STRING);
 
 app.use(express.static('public'));
