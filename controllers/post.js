@@ -11,6 +11,9 @@ const getFeedPosts = async (req, res) => {
     }
 };
 
+// const getUserDetails = async (req, res) => {
+// };
+
 const createPost = async (req, res) => {
     res.json(await postService.createPost(req)); //check syntax
 };

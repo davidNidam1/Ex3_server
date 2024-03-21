@@ -6,6 +6,11 @@ var router = express.Router();
 router.route('/')
     .get(postController.getFeedPosts)
 
+// router.route('/:id')
+//     .get(postController.getUserDetails)
+
+
+
 //router.route('/:id')
     //.get(postController.getPost)
     //.delete(postController.deletePost)

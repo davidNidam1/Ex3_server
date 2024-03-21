@@ -176,9 +176,17 @@ async function getFriendPosts(currentUserUsername, friendUsername) {
 
 async function createPost(username, { text, picture }) {
     try {
+
+        // Fetch the user document based on the username
+        const user = await User.findOne({ username: username });
+
+        // Ensure that the user exists
+        if (!user) {
+            throw new Error(`User with username '${username}' not found`);
+        }
         // Create the new post
         const newPost = new Post({
-            publisher: username,
+            publisher: user._id, // Set the publisher to the ObjectId of the user,
             text: text,
             picture: picture,
             date: new Date() // Set the current date as the default date TODO - check
@@ -219,7 +227,7 @@ async function getFriends(username) {
 async function askToBeFriend(currentUser, requestedUser) {
     try {
         // Find the requested user and update its friendRequests list
-        await User.updateOne({ username: requestedUser }, { $addToSet: { friendRequests: currentUser } });
+        await User.updateOne({ username: requestedUser }, { $addToSet: { friendRequests: currentUser.userId } });
     } catch (error) {
         // Handle any errors that occur during friend request sending
         console.error('Error sending friend request:', error);
@@ -231,11 +239,19 @@ async function askToBeFriend(currentUser, requestedUser) {
 
 async function acceptFriendship(senderUser, receiverUser) {
     try {
+        // Find the user document corresponding to the receiverUser
+        const receiver = await User.findOne({ username: receiverUser });
+        const sender = await User.findOne({ username: senderUser });
+
+        if (!receiver) {
+            throw new Error('Receiver user not found');
+        }
+
         // Update the sender's friend list
-        await User.updateOne({ username: senderUser }, { $addToSet: { friends: receiverUser } });
+        await User.updateOne({ username: senderUser }, { $addToSet: { friends: receiver._id } });
 
         // Update the receiver's friendRequests list
-        await User.updateOne({ username: receiverUser }, { $pull: { friendRequests: senderUser } });
+        await User.updateOne({ username: receiverUser }, { $pull: { friendRequests: sender._id } });
     } catch (error) {
         // Handle any errors that occur during friendship acceptance
         console.error('Error accepting friendship:', error);
