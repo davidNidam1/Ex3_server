@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
-const userSchema = new mongoose.Schema({
+const Schema = mongoose.Schema;
+const User = new Schema({
     username: {
         type: String,
         required: true,
@@ -12,7 +13,10 @@ const userSchema = new mongoose.Schema({
         required: true,
     },
     
-    profilePicture: String, // Path to profile picture (can be stored in server or external service)
+    profilePicture: {
+        type: String, // Path to profile picture (can be stored in server or external service)
+        required: true,
+    },
     
     friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }], // Array of user IDs representing friends
     
@@ -21,7 +25,5 @@ const userSchema = new mongoose.Schema({
     userId: { type: String, required: true, unique: true },
 }, { id: false });
 
-// Save a new user in 'users' collection:
-const User = mongoose.model('User', userSchema, 'users');
 
-module.exports = User;
+module.exports = mongoose.model('User', User);

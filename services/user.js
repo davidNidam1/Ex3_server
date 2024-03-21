@@ -241,8 +241,6 @@ async function acceptFriendship(senderUser, receiverUser) {
 }
 
 
-const User = require('../models/user');
-
 async function deleteFriend(currentUser, friendToRemove) {
     try {
         // Update the current user's friend list to remove the friend to remove

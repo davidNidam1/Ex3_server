@@ -2,9 +2,11 @@ const mongoose = require('mongoose');
 const User = require('./user');
 
 const Schema = mongoose.Schema;
+
 const Post = new Schema({
     publisher: {
-        ref: User,
+        type: Schema.Types.ObjectId,
+        ref: 'User', // Name of the referenced model
         required: true
     },
     date: {
@@ -16,9 +18,8 @@ const Post = new Schema({
         required: true
     },
     picture: {
-        type: String //affirm
+        type: String
     }
-
-
 });
+
 module.exports = mongoose.model('Post', Post);
