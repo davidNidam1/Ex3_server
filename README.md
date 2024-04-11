@@ -1,5 +1,5 @@
 ## Introduction
-Welcome to our project, Facybook! This README file serves as a guide to understanding and running our web application, Android application, and server. In this project stage, we have successfully built a server following specific APIs, enabled token generation for users, and established communication between the web application and the server. While the Android application integration is a work in progress, we have made significant strides in improving its code architecture.
+Welcome to our project, Facybook! This README file serves as a guide to understanding and running our web application, Android application, and server. In this project stage, we have successfully built a server following specific APIs, enabled token generation for users, and established communication between the web application and the server. While the Android application integration is a work in progress, we have made significant strides in improving its code architecture. Please note that in the Android app, the Username is currently hardcoded (Username = user, password = password).
 
 ## Overview
 Our project, Facybook, is inspired by Facebook and aims to provide a similar social media experience across web and mobile platforms. The project consists of three main components:
@@ -8,7 +8,7 @@ Our project, Facybook, is inspired by Facebook and aims to provide a similar soc
 
 2. **Web Application**: A user interface accessed via a web browser, interacting with the server to fetch and display data. The web application code can be found in the [Ex2_Web](https://github.com/davidNidam1/Ex2_Web.git) repository.
 
-3. **Android Application**: A mobile interface, currently undergoing improvements in its code architecture. The Android application code can be found in the [Ex2_Android](https://github.com/davidNidam1/Ex2_Android.git) repository.
+3. **Android Application**: A mobile interface, currently undergoing improvements in its code architecture. The Android application code can be found in the [Ex2_Android](https://github.com/davidNidam1/Ex2_Android.git) repository. Please note that in the Android app, the Username is still hardcoded (Username = user, password = password), and the transfer to dark mode is via the phone setting itself, as there is no button in the app. Additionally, the Android app is connected to a local database.
 
 # Running the System
 To run the system locally, follow these steps:
