@@ -1,10 +1,4 @@
 # Ex3_server
 A Repository for the server
-Links for the apps:
-
-
-Web:  https://github.com/davidNidam1/Ex2_Web.git
-
-
-Android:  https://github.com/davidNidam1/Ex2_Android.git
-
+Please go to the develop branch: [Ex3_server (develop branch)](https://github.com/davidNidam1/Ex3_server/tree/develop)
+(explained there).
