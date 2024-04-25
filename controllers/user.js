@@ -178,10 +178,10 @@ async function getFriends(req, res) {
 async function askToBeFriend(req, res) {
     try {
         // Extract the username from request parameters
-        const requestedUser = req.params.id;
+        const requestedUser = await req.params.id;
 
         // Extract the current user from the token
-        const currentUser = tokenChecker(req);
+        const currentUser = await tokenChecker(req);
 
         // Call the service function to send friend request
         await userService.askToBeFriend(currentUser, requestedUser);
@@ -197,7 +197,7 @@ async function askToBeFriend(req, res) {
 async function acceptFriendship(req, res) {
     try {
         // Extract the usernames from request parameters
-        const currentUser = tokenChecker(req);
+        const currentUser = await tokenChecker(req);
         const senderUser = req.params.fid;
         const receiverUser = req.params.id;
 

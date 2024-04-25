@@ -7,12 +7,6 @@ app.use(bodyParser.urlencoded({ limit: '100mb', extended: true }));
 app.use(express.json({ limit: '100mb' })); // Increase payload size limit to 50MB for JSON data
 
 
-
-// Increase payload size limit to 50MB (or any other suitable value)
-//app.use(bodyParser.json({ limit: '50mb' }));
-
-
-
 const cors = require('cors'); //
 app.use(cors()); //
 
