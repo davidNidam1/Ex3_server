@@ -13,7 +13,7 @@ const tokenChecker = async (req) => {
     const token = await req.headers.authorization.split(' ')[1];
     const affirmedToken = tokenService.verifyToken(token);
 
-    // affirmedToken = username
+    // affirmedToken = name
     return affirmedToken;
 };
 

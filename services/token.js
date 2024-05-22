@@ -5,8 +5,8 @@ const Token = require('../models/token');
 const secretKey = 'aVerySecretKey'; 
 
 // Function to generate token
-const createToken = async (username) => {
-  const createdToken = token.sign(username, secretKey); //TODO check if assigning a variable possible syntaxly
+const createToken = async (name) => {
+  const createdToken = token.sign(name, secretKey); //TODO check if assigning a variable possible syntaxly
   return createdToken;
 };
 
@@ -15,8 +15,8 @@ const createToken = async (username) => {
 // TODO: checl it acctually does.
 const verifyToken = (jwt) => {
   try {
-    const username = token.verify(jwt, secretKey);
-    return username;
+    const name = token.verify(jwt, secretKey);
+    return name;
   } catch (error) {
     return null;
   }

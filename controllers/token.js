@@ -4,10 +4,10 @@ const userService  = require('../services/user');
 // Controller function to generate a token (after a successfull log-in):
 const processLogin = async (req, res) => {
   // Authenticate user with username and password
-  const userExist = await userService.checkUserExistence(req.body.username);
+  const userExist = await userService.checkUserExistence(req.body.name);
   if (userExist) {
     // Create token
-    const token = await tokenService.createToken( userExist.username);
+    const token = await tokenService.createToken(userExist.name);
     // Save token to database
     // TODO: check if next line needed:
     await tokenService.saveToken({ userExist, token });

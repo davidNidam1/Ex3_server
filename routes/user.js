@@ -20,11 +20,22 @@ router.route('/:id/posts/:pid')
     .patch(postController.updatePost)
     .delete(postController.deletePost)
 
-    
+router.route("/:id/posts/:pid/likes")
+.patch(postController.updateLikes)
+
+router
+  .route("/:id/posts/:pid/comments")
+  .get(postController.getPostsComments)
+  .post(postController.addComment)
+  .patch(postController.updateComment);
+
+router
+  .route("/:id/posts/:pid/comments/:cid")
+  .delete(postController.deleteComment)
+
 router.route('/:id/friends')
     .get(userController.getFriends)
     .post(userController.askToBeFriend)
-
 
 router.route('/:id/friends/:fid')
     .patch(userController.acceptFriendship)
