@@ -2,6 +2,7 @@
 const tokenChecker  = require('../tokenChecker').tokenChecker;
 const userService = require('../services/user');
 const postController = require('../controllers/post');
+const checkUrlInBlacklist = require('../urlsChecker'); // Import the checker function
 
 
 async function createUser(req, res) {
@@ -137,13 +138,21 @@ async function createPost(req, res) {
         }
 
         // Extract post data from request body
-        const { text, picture, profilePic } = req.body;
+        const { text, picture, profilePic, url } = req.body;
+
+        // Check if the URL is blacklisted
+        const isBlacklisted = await checkUrlInBlacklist(url);
+
+        // If URL is blacklisted, return an error response
+        if (isBlacklisted) {
+            return res.status(403).json({ message: 'URL is blacklisted and cannot be posted' });
+        }
 
         // Create the post
         const newPost = await userService.createPost(name, {
-          text,
-          picture,
-          profilePic,
+            text,
+            picture,
+            profilePic,
         });
 
         // Respond with the newly created post object
@@ -154,6 +163,7 @@ async function createPost(req, res) {
         res.status(error.code).json({ message: error.message });
     }
 }
+
 
 
 async function getFriends(req, res) {
