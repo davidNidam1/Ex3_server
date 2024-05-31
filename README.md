@@ -14,7 +14,9 @@ Navigate to the ex4_cpp_server directory and compile the server code, do it via 
 #### First Terminal (step 2.1):
  
 `cd ./src`
+
 `g++ -o ex1 ./Server.cpp ./Blacklist.cpp ./BloomFilter.cpp ./Hashs.cpp ./InputOutput.cpp`
+
 `./ex1/Server.cpp`
 
 
