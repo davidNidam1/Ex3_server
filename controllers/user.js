@@ -1,9 +1,7 @@
 // controllers/user.js
 const tokenChecker  = require('../tokenChecker').tokenChecker;
 const userService = require('../services/user');
-const postController = require('../controllers/post');
-const checkUrlInBlacklist = require('../urlsChecker'); // Import the checker function
-
+const { checkForCorruptedUrls } = require("../urlsChecker"); // Import the checker function
 
 async function createUser(req, res) {
     try {
@@ -84,7 +82,6 @@ async function deleteUser(req, res) {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        //TODO: check if returned res is needed.
         // Respond with a success message
         res.json({ message: 'User deleted successfully' });
     } catch (error) {
@@ -129,42 +126,41 @@ async function getFriendPosts(req, res) {
 
 async function createPost(req, res) {
     try {
-        // Extract user's name from req.params.id
-        const name = req.params.id;
+      // Extract user's name from req.params.id
+      const name = req.params.id;
 
-        // Check if the user's token is valid
-        if (!tokenChecker(req)) {
-            return res.status(401).json({ message: 'Unauthorized' });
-        }
+      // Check if the user's token is valid
+      if (!tokenChecker(req)) {
+        return res.status(401).json({ message: "Unauthorized" });
+      }
 
-        // Extract post data from request body
-        const { text, picture, profilePic, url } = req.body;
+      // Extract post data from request body
+      const { text, picture, profilePic } = req.body;
 
-        // Check if the URL is blacklisted
-        const isBlacklisted = await checkUrlInBlacklist(url);
+      // Check if the URL is blacklisted
+      const isBlacklisted = await checkForCorruptedUrls(text);
 
-        // If URL is blacklisted, return an error response
-        if (isBlacklisted) {
-            return res.status(403).json({ message: 'URL is blacklisted and cannot be posted' });
-        }
+      // If URL is blacklisted, return an error response
+      if (isBlacklisted) {
+        console.log("URL is blacklisted and cannot be posted");
+        return res.status(403).json({ message: "URL is blacklisted and cannot be posted" });
+      }
 
-        // Create the post
-        const newPost = await userService.createPost(name, {
-            text,
-            picture,
-            profilePic,
-        });
+      // Create the post
+      const newPost = await userService.createPost(name, {
+        text,
+        picture,
+        profilePic,
+      });
 
-        // Respond with the newly created post object
-        res.status(201).json(newPost);
+      // Respond with the newly created post object
+      res.status(201).json(newPost);
     } catch (error) {
         // Handle any errors that occur during post creation
         console.error('Error creating post:', error);
         res.status(error.code).json({ message: error.message });
     }
 }
-
-
 
 async function getFriends(req, res) {
     try {

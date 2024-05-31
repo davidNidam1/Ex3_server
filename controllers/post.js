@@ -1,6 +1,6 @@
 const postService = require('../services/post');
 const tokenChecker = require('../tokenChecker').tokenChecker;
-
+const { checkForCorruptedUrls } = require("../urlsChecker"); // Import the checker function
 
 const getFeedPosts = async (req, res) => {
     try {
@@ -159,36 +159,51 @@ const getPost = async (req, res) => {
 //handle exception
 const updatePost = async (req, res) => {
     try {
-        // Extract post ID from request parameters
-        const postId = req.params.pid;
+      // Extract post ID from request parameters
+      const postId = req.params.pid;
 
-        // Extract user from token
-        const currentUser = await tokenChecker(req);
+      // Extract user from token
+      const currentUser = await tokenChecker(req);
 
-        // Retrieve the post by ID
-        const post = await postService.getPostById(postId);
+      // Retrieve the post by ID
+      const post = await postService.getPostById(postId);
 
-        // Check if the post exists
-        if (!post) {
-            return res.status(404).json({ errors: ['Post not found'] });
-        }
+      // Check if the post exists
+      if (!post) {
+        return res.status(404).json({ errors: ["Post not found"] });
+      }
 
-        // Check if the current user is the publisher of the post
-        if (post.publisher !== currentUser) {
-            return res.status(403).json({ errors: ['Unauthorized: You are not the publisher of this post'] });
-        }
+      // Check if the current user is the publisher of the post
+      if (post.publisher !== currentUser) {
+        return res
+          .status(401)
+          .json({
+            errors: ["Unauthorized: You are not the publisher of this post"],
+          });
+      }
 
-        // Extract text and picture from request body
-        const {text} = req.body;
+      // Extract text and picture from request body
+      const { text } = req.body;
 
-        // Update the post
-        const updatedPost = await postService.updatePost(postId, {text});
+      // Check if the URL is blacklisted
+      const isBlacklisted = await checkForCorruptedUrls(text);
 
-        // Respond with the updated post
-        res.status(200).json(updatedPost);
+      // If URL is blacklisted, return an error response
+      if (isBlacklisted) {
+        console.log("blacklisted Url. Post cannot be updated.");
+        return res
+          .status(403)
+          .json({ message: "blacklisted Url. Post cannot be updated." });
+      }
+
+      // Update the post
+      const updatedPost = await postService.updatePost(postId, { text });
+
+      // Respond with the updated post
+      res.status(200).json(updatedPost);
     } catch (error) {
         console.error('Error updating post:', error);
-        res.status(500).json({ message: 'Internal Server Error' });
+        res.status(error.code).json({ message: error.message });
     }
 };
 

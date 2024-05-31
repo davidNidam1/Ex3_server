@@ -1,14 +1,21 @@
-// urlChecker.js
+const {
+  connectToCppServer,
+  communicateWithCppServer,
+} = require("./cppConnection");
 
-require("dotenv").config();
+const checkForCorruptedUrls = async (text) => {
+  const message = `2 ${text}`;
+  try {
+    await connectToCppServer();
+    const response = await communicateWithCppServer(message);
+    if (response.trim() === "true true") {
+      return true;
+    }
+  } catch (error) {
+    console.error(`Error checking for URL in ${text}:`, error);
+    throw error;
+  }
+  return false;
+};
 
-// Function to check if a URL is blacklisted
-async function checkUrlInBlacklist(url) {
-    // Retrieve the blacklist URLs from environment variables
-    const initialUrls = process.env.INITIAL_URLS.split(",");
-
-    // Check if the URL is in the blacklist
-    return initialUrls.includes(url);
-}
-
-module.exports = checkUrlInBlacklist;
+module.exports = { checkForCorruptedUrls };
