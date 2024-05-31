@@ -9,7 +9,7 @@ Ensure MongoDB is installed and running on your machine or available on a server
 
 ### 2. C++ Server (Ex4 Server)
 
-Go there: [`ex4_cpp_server` directory]https://github.com/davidNidam1/Ex1/tree/ex4_cpp_server
+Go there: [ex4_cpp_server directory]https://github.com/davidNidam1/Ex1/tree/ex4_cpp_server
 
 Navigate to the ex4_cpp_server directory and compile the server code, do it via 2 terminals:
 
@@ -50,7 +50,7 @@ Ensure this server is configured to connect to MongoDB.
 
 ### 4. Ex2 Web
 
-Go there: [`Ex4_branch` directory]https://github.com/davidNidam1/Ex2_Web/tree/Ex4_branch
+Go there: [Ex4_branch directory]https://github.com/davidNidam1/Ex2_Web/tree/Ex4_branch
 
 Navigate to the ex4_branch directory:
 
