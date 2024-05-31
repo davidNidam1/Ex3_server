@@ -23,27 +23,41 @@ Navigate to the ex4_cpp_server directory and compile the server code, do it via 
 #### Second Terminal (step 2.2):
 
 `cd ./src`
+
 `g++ -o ex1 ./Client.cpp ./Blacklist.cpp ./BloomFilter.cpp ./Hashs.cpp ./InputOutput.cpp`
+
 `./ex1/Client.cpp`
 
 
 ### 3. Ex3 Server
 Navigate to the ex4_server_updated directory:
+
 `cd ex4_server_updated`
+
 Install the necessary dependencies:
+
 `npm install`
+
 Start the server:
+
 `npm start`
+
 Ensure this server is configured to connect to MongoDB.
 
 
 ### 4. Ex2 Web
 Navigate to the ex4_branch directory:
+
 `cd ex4_branch`
+
 Install the necessary dependencies:
+
 `npm install`
+
 `npm install react-confetti`
+
 Start the web server:
+
 `npm start`
 
 
