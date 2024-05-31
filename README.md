@@ -1,37 +1,76 @@
-## Introduction
-Welcome to our project, Facybook! This README file serves as a guide to understanding and running our web application, Android application, and server. In this project stage, we have successfully built a server following specific APIs, enabled token generation for users, and established communication between the web application and the server. While the Android application integration is a work in progress, we have made significant strides in improving its code architecture. Please note that in the Android app, the Username is currently hardcoded (Username = user, password = password).
+# Project Setup and Usage Guide
 
-## Overview
-Our project, Facybook, is inspired by Facebook and aims to provide a similar social media experience across web and mobile platforms. The project consists of three main components:
 
-1. **Server**: This component handles communication between the web application, Android application, and the database. Please note that the server code needs to be downloaded from the "develop" branch to ensure compatibility with the ongoing project development.
+## Setting Up the Environment
 
-2. **Web Application**: A user interface accessed via a web browser, interacting with the server to fetch and display data. The web application code can be found in the [Ex2_Web](https://github.com/davidNidam1/Ex2_Web.git) repository.
 
-3. **Android Application**: A mobile interface, currently undergoing improvements in its code architecture. The Android application code can be found in the [Ex2_Android](https://github.com/davidNidam1/Ex2_Android.git) repository. Please note that in the Android app, the Username is still hardcoded (Username = user, password = password), and the transfer to dark mode is via the phone setting itself, as there is no button in the app. Additionally, the Android app is connected to a local database.
+### 1. MongoDB
+Ensure MongoDB is installed and running on your machine or available on a server. You will need the connection string to connect the application to MongoDB.
 
-# Running the System
-To run the system locally, follow these steps:
+### 2. C++ Server (Ex4 Server)
+Navigate to the ex4_cpp_server directory and compile the server code, do it via 2 terminals:
 
-### 1. Set Up MongoDB
-- Download MongoDB from the official website and follow the installation instructions for your operating system.
-- Once installed, start the MongoDB server by running the `mongod` command in your terminal or command prompt.
-- Press "Connect" to ensure successful connection to the MongoDB database.
 
-### 2. Run the Server
-- Download the server code from the "develop" branch of our repository.
-- Open the server code in your preferred Integrated Development Environment (IDE).
-- Press `F5` or run the server using the appropriate command to start the server.
+#### First Terminal (step 2.1):
+ 
+`cd ./src`
+`g++ -o ex1 ./Server.cpp ./Blacklist.cpp ./BloomFilter.cpp ./Hashs.cpp ./InputOutput.cpp`
+`./ex1/Server.cpp`
 
-### 3. Launch the Web Application
-- Download the web application code from the main branch of our repository.
-- Open a terminal or command prompt and navigate to the directory containing the web application code.
-- Run the command `npm start` to start the development server for the web application.
-- Make sure that no other application is running on port `3000` to avoid conflicts.
 
-### 4. Explore the Android Application
-- Download the Android application code from the main branch of our repository to explore the improvements made in its code architecture.
-- Follow the installation instructions provided for your specific Android device or emulator.
+#### Second Terminal (step 2.2):
 
-## Conclusion
-With the server successfully built and the web application connected, our project, Facybook, is well underway. Although the Android application integration remains a work in progress, significant improvements have been made to its code architecture. We hope you enjoy exploring our project and welcome any feedback or contributions.
+`cd ./src`
+`g++ -o ex1 ./Client.cpp ./Blacklist.cpp ./BloomFilter.cpp ./Hashs.cpp ./InputOutput.cpp`
+`./ex1/Client.cpp`
+
+
+### 3. Ex3 Server
+Navigate to the ex4_server_updated directory:
+`cd ex4_server_updated`
+Install the necessary dependencies:
+`npm install`
+Start the server:
+`npm start`
+Ensure this server is configured to connect to MongoDB.
+
+
+### 4. Ex2 Web
+Navigate to the ex4_branch directory:
+`cd ex4_branch`
+Install the necessary dependencies:
+`npm install`
+`npm install react-confetti`
+Start the web server:
+`npm start`
+
+
+## User Management
+
+### Registration
+Access the registration endpoint of the web server.
+Submit the registration form with required details.
+The form will be handled by the Ex3 server, which interacts with MongoDB to store user details.
+Login
+Access the login endpoint of the web server.
+Submit the login form with your credentials.
+The upgraded Ex3 server will verify the credentials against the MongoDB database.
+
+### Post Management
+#### Creating a Post
+Use the client (compiled from Ex4 server) to send a request to create a post.
+The upgraded Ex3 server will handle the request and interact with MongoDB to store the new post.
+#### Editing a Post
+Use the client to send a request to edit a post.
+The upgraded Ex3 server will handle the request and update the post details in MongoDB.
+#### Deleting a Post
+Use the client to send a request to delete a post.
+The upgraded Ex3 server will handle the request and remove the post from MongoDB.
+#### Viewing Posts
+Use the client to send a request to view posts.
+The upgraded Ex3 server will fetch the posts from MongoDB and send them back to the client for display.
+
+
+
+
+
